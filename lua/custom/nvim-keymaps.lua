@@ -1,4 +1,5 @@
 local map = vim.keymap.set
+local unmap = vim.keymap.del
 local opts = { noremap = true }
 -- [[ Kickstart Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -89,8 +90,6 @@ map("n", "J", "5gj", opts)
 map("n", "K", "5gk", opts)
 map("v", "J", "5gj", opts)
 map("v", "K", "5gk", opts)
--- open file explorer
-map("n", "<C-n>", "<cmd>Neotree toggle<CR>", { desc = "Toggle file explorer" })
 -- Keep Visual mode active after indent/unindent
 vim.keymap.set("v", "<", "<gv", opts)
 vim.keymap.set("v", ">", ">gv", opts)

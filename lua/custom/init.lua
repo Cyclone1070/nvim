@@ -1,2 +1,2 @@
-require("custom.keymaps")
+require("custom.nvim-keymaps")
 require("custom.layout")
