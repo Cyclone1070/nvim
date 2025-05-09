@@ -1,5 +1,4 @@
 local map = vim.keymap.set
-local unmap = vim.keymap.del
 local opts = { noremap = true }
 -- [[ Kickstart Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -55,10 +54,10 @@ end
 map("n", ";", ":", opts)
 map("v", ";", ":", opts)
 -- remap escape to jk or kj
-map("i", "jk", "<ESC>", opts)
-map("i", "kj", "<ESC>", opts)
-map("i", "JK", "<ESC>", opts)
-map("i", "KJ", "<ESC>", opts)
+-- map("i", "jk", "<ESC>", opts)
+-- map("i", "kj", "<ESC>", opts)
+-- map("i", "JK", "<ESC>", opts)
+-- map("i", "KJ", "<ESC>", opts)
 -- remap v to exit visual mode
 map("v", "v", "<ESC>")
 -- only paste from yank register
