@@ -53,6 +53,7 @@ end
 
 -- enter command mode with ;
 map("n", ";", ":", opts)
+map("v", ";", ":", opts)
 -- remap escape to jk or kj
 map("i", "jk", "<ESC>", opts)
 map("i", "kj", "<ESC>", opts)

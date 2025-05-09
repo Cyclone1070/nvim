@@ -6,6 +6,12 @@ vim.opt.expandtab = false
 vim.opt.wrap = true
 vim.opt.linebreak = true
 
+--Neovide
+if vim.g.neovide then -- Check if Neovim is running inside Neovide
+	-- set font to comicshanns
+	vim.opt.guifont = "ComicShannsMono Nerd Font Mono:h15"
+end
+-- Globally disable auto-continuation of comments on new lines for all filetypes
 local myGlobalFormatOptionsGroup = vim.api.nvim_create_augroup("MyGlobalFormatOptions", { clear = true })
 
 vim.api.nvim_create_autocmd("FileType", {
