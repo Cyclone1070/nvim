@@ -52,7 +52,15 @@ return { -- Fuzzy Finder (files, lsp, etc)
 			--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
 			--   },
 			-- },
-			-- pickers = {}
+			pickers = {
+				help_tags = {
+					mappings = {
+						i = {
+							["<CR>"] = require("telescope.actions").select_vertical,
+						},
+					},
+				},
+			},
 			extensions = {
 				["ui-select"] = {
 					require("telescope.themes").get_dropdown(),
