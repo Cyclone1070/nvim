@@ -11,6 +11,41 @@ return {
 	},
 	cmd = "Neotree",
 	keys = {
-		{ "\\", ":Neotree toggle<CR>", desc = "NeoTree reveal", silent = true },
+		{ "<leader>e", ":Neotree toggle float<CR>", desc = "File [E]xplorer", silent = true },
+		{ "\\", ":Neotree toggle float git_status<CR>", desc = "Git status", silent = true },
+	},
+	opts = {
+		filesystem = {
+			follow_current_file = { enabled = true },
+		},
+		window = {
+			mappings = {
+				["l"] = "open",
+				["h"] = "close_node",
+				["<space>"] = "none",
+				["Y"] = {
+					function(state)
+						local node = state.tree:get_node()
+						local path = node:get_id()
+						vim.fn.setreg("+", path, "c")
+					end,
+					desc = "Copy Path to Clipboard",
+				},
+				["O"] = {
+					function(state)
+						require("lazy.util").open(state.tree:get_node().path, { system = true })
+					end,
+					desc = "Open with System Application",
+				},
+			},
+		},
+		default_component_configs = {
+			indent = {
+				with_expanders = true,
+				expander_collapsed = "",
+				expander_expanded = "",
+				expander_highlight = "NeoTreeExpander",
+			},
+		},
 	},
 }
