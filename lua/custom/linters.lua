@@ -1,5 +1,5 @@
 return {
-	markdown = { "markdownlint", "vale" },
+	markdown = { "markdownlint" },
 	dockerfile = { "hadolint" },
 	json = { "jsonlint" },
 }

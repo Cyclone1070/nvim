@@ -21,6 +21,11 @@ return { -- Collection of various small independent plugins/modules
 		-- - sr)'  - [S]urround [R]eplace [)] [']
 		require("mini.surround").setup()
 
+		-- tabline
+		require("mini.tabline").setup()
+		vim.keymap.set("n", "H", "<CMD>bNext<CR>")
+		vim.keymap.set("n", "L", "<CMD>bnext<CR>")
+
 		-- Simple and easy statusline.
 		--  You could remove this setup call if you don't like it,
 		--  and try some other statusline plugin
