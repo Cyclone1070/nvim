@@ -12,7 +12,8 @@ return {
 	cmd = "Neotree",
 	keys = {
 		{ "<leader>e", ":Neotree toggle float <CR>", desc = "File [E]xplorer", silent = true },
-		{ "\\", ":Neotree toggle float git_status<CR>", desc = "Git status", silent = true },
+		{ "<leader>g", ":Neotree toggle float git_status<CR>", desc = "Git status", silent = true },
+		{ "<leader>b", ":Neotree toggle float buffers<CR>", desc = "Git status", silent = true },
 	},
 	opts = {
 		filesystem = {
