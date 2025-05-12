@@ -47,6 +47,8 @@ if vim.g.neovide then
 	vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
 	vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
 	vim.keymap.set("i", "<D-v>", "<C-R>+") -- Paste insert mode
+	-- Macos option key for meta
+	vim.g.neovide_input_macos_option_key_is_meta = "only_left"
 end
 -- aditional keymaps here
 
