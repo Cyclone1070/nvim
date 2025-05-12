@@ -79,6 +79,12 @@ map("i", "<C-h>", "<Left>", opts)
 map("i", "<C-l>", "<Right>", opts)
 map("i", "<C-j>", "<Down>", opts)
 map("i", "<C-k>", "<Up>", opts)
+-- move current window around
+vim.keymap.set("n", "<C-w>h", "<C-w>H", { desc = "Move window left" })
+vim.keymap.set("n", "<C-w>j", "<C-w>J", { desc = "Move window down" })
+vim.keymap.set("n", "<C-w>k", "<C-w>K", { desc = "Move window up" })
+vim.keymap.set("n", "<C-w>l", "<C-w>L", { desc = "Move window right" })
+vim.keymap.set("n", "<C-w><CR>", "<C-w>_<C-w>|", { desc = "Maximize window" })
 -- Remap to moving based on visual lines
 map("n", "j", "gj", opts)
 map("n", "k", "gk", opts)

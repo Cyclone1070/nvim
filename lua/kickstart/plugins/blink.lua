@@ -35,6 +35,9 @@ return { -- Autocompletion
 	--- @type blink.cmp.Config
 	opts = {
 		keymap = {
+			-- Override <C-k> with <C-r> to enable cursor navigation in insert mode
+			["<C-k>"] = {},
+			["<C-r>"] = { "show_signature", "hide_signature", "fallback" },
 			-- Tab to select next items, selected item is auto inserted
 			preset = "super-tab",
 			["<Tab>"] = { "select_next", "fallback" },
