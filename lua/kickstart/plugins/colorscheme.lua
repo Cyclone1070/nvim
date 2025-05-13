@@ -36,15 +36,24 @@ return {
 				-- Set additional highlights
 				-- constructing line number highlight style by combining fg with bg of cursorline
 				local line_nr_bg = vim.api.nvim_get_hl(0, { name = "CursorLine", link = false }).bg
+				-- constructing tabline colors to keep their default and only append bg
+				local tabline_current = vim.api.nvim_get_hl(0, { name = "MiniTablineCurrent", link = false })
+				tabline_current.bg = vim.api.nvim_get_hl(0, { name = "Visual", link = false }).bg
 				local tabline_hidden = vim.api.nvim_get_hl(0, { name = "MiniTablineHidden", link = false })
 				tabline_hidden.bg = line_nr_bg
+				local tabline_trunc = vim.api.nvim_get_hl(0, { name = "MiniTablineTrunc", link = false })
+				tabline_trunc.bg = line_nr_bg
+
 				-- Set the entire left column to new style
 				vim.api.nvim_set_hl(0, "LineNr", { fg = "#788a8a", bg = line_nr_bg })
 				vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#bbbbbb", bg = line_nr_bg })
 				vim.api.nvim_set_hl(0, "SignColumn", { fg = "#788a8a", bg = line_nr_bg })
 				vim.api.nvim_set_hl(0, "CursorLineSign", { fg = "#788a8a", bg = line_nr_bg })
 				-- Set minitabline color
+				vim.api.nvim_set_hl(0, "MiniTablineCurrent", tabline_current)
+				vim.api.nvim_set_hl(0, "MiniTablineVisible", { link = "MiniTablineHidden" })
 				vim.api.nvim_set_hl(0, "MiniTablineHidden", tabline_hidden)
+				vim.api.nvim_set_hl(0, "MiniTablineTrunc", tabline_trunc)
 				-- Keywords highlight
 				vim.api.nvim_set_hl(0, "Statement", { fg = "#E1914C" })
 			end
