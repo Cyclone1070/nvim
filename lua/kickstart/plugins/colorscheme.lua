@@ -7,7 +7,7 @@ return {
 				local hues = require("mini.hues")
 
 				-- Use os.time() for broader compatibility during early startup
-				math.randomseed(os.time())
+				math.randomseed(math.floor(vim.fn.reltimefloat(vim.fn.reltime()) * 1000000))
 
 				-- Define the custom function to generate hues, avoiding pinks and reds
 				local function generate_allowed_hue()
@@ -60,13 +60,14 @@ return {
 			_G.load_random_hues()
 
 			-- autocmd to change color on buffer change
+			local last_file_bufnr
 			local myBufferEventsGroup = vim.api.nvim_create_augroup("MyBufferEventActions", { clear = true })
+
 			vim.api.nvim_create_autocmd({ "BufEnter" }, {
 				group = myBufferEventsGroup,
 				pattern = "*", -- Apply to all buffers/filetypes. Adjust if needed.
 				callback = function(args)
 					local bufnr = args.buf
-
 					-- Filter for "normal" file buffers
 					-- buflisted(bufnr) == 1: Is it a user-interactable buffer?
 					-- vim.bo[bufnr].buftype == "": Is it a normal buffer (not 'nofile', 'prompt', 'help', etc.)?
@@ -74,7 +75,9 @@ return {
 						vim.fn.bufexists(bufnr) == 1
 						and vim.fn.buflisted(bufnr) == 1
 						and vim.bo[bufnr].buftype == ""
+						and last_file_bufnr ~= bufnr
 					then
+						last_file_bufnr = bufnr
 						_G.load_random_hues()
 					end
 				end,
