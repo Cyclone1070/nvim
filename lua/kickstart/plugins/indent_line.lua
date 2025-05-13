@@ -11,7 +11,6 @@ return {
 			},
 			scope = {
 				enabled = true,
-				highlight = "IblScope",
 			},
 		},
 		config = function(_, opts)

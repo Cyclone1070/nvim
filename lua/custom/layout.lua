@@ -5,6 +5,8 @@ vim.opt.expandtab = false
 -- set line wrap and break line at word end
 vim.opt.wrap = true
 vim.opt.linebreak = true
+-- relative line numbers
+vim.opt.relativenumber = true
 
 --Neovide
 if vim.g.neovide then -- Check if Neovim is running inside Neovide

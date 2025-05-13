@@ -40,6 +40,8 @@ return {
 		cmd = "Mason",
 		opts = {
 			ui = {
+				-- border and icons
+				border = "rounded",
 				icons = {
 					package_installed = "✓",
 					package_pending = "➜",

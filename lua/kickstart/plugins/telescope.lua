@@ -22,6 +22,21 @@ return { -- Fuzzy Finder (files, lsp, etc)
 		{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
 	},
 	config = function()
+		-- -- Uncomment to handle winborder setting
+
+		-- vim.api.nvim_create_autocmd("User", {
+		-- 	pattern = "TelescopeFindPre",
+		-- 	callback = function()
+		-- 		vim.opt_local.winborder = "none"
+		-- 		vim.api.nvim_create_autocmd("WinLeave", {
+		-- 			once = true,
+		-- 			callback = function()
+		-- 				vim.opt_local.winborder = "rounded"
+		-- 			end,
+		-- 		})
+		-- 	end,
+		-- })
+
 		-- Telescope is a fuzzy finder that comes with a lot of different things that
 		-- it can fuzzy find! It's more than just a "file finder", it can search
 		-- many different aspects of Neovim, your workspace, LSP, and more!
