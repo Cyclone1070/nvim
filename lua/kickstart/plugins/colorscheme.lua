@@ -33,6 +33,19 @@ return {
 					background = base_colors.background,
 					foreground = base_colors.foreground,
 				})
+				-- Set additional highlights
+				-- constructing line number highlight style by combining fg with bg of cursorline
+				local line_nr_bg = vim.api.nvim_get_hl(0, { name = "CursorLine", link = false }).bg
+				local tabline_hidden = vim.api.nvim_get_hl(0, { name = "MiniTablineHidden", link = false })
+				tabline_hidden.bg = line_nr_bg
+				-- Set the entire left column to new style
+				vim.api.nvim_set_hl(0, "LineNr", { fg = "#788a8a", bg = line_nr_bg })
+				vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#bbbbbb", bg = line_nr_bg })
+				vim.api.nvim_set_hl(0, "SignColumn", { fg = "#788a8a", bg = line_nr_bg })
+				vim.api.nvim_set_hl(0, "CursorLineSign", { fg = "#788a8a", bg = line_nr_bg })
+				-- Set minitabline color
+				vim.api.nvim_set_hl(0, "MiniTablineHidden", tabline_hidden)
+				-- Keywords highlight
 				vim.api.nvim_set_hl(0, "Statement", { fg = "#E1914C" })
 			end
 			_G.load_random_hues()
