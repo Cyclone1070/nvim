@@ -1,4 +1,4 @@
--- this file is just for calling definitions in colorscheme.lua
+-- This file is just for calling definitions in colorscheme.lua, required to make a colorscheme called minirandom with custom color generator
 if _G.load_random_hues then
 	_G.load_random_hues()
 else

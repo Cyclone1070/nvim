@@ -1,4 +1,5 @@
 return {
+	{ "echasnovski/mini.colors", opts = {} },
 	{
 		"echasnovski/mini.hues",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
@@ -78,7 +79,8 @@ return {
 						and last_file_bufnr ~= bufnr
 					then
 						last_file_bufnr = bufnr
-						_G.load_random_hues()
+						vim.cmd("Colorscheme minirandom")
+						-- _G.load_random_hues()
 					end
 				end,
 			})
