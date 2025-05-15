@@ -18,17 +18,7 @@ return {
 				-- Return the allowed hue
 				return hue
 			end
-
-			function _G.load_random_hues()
-				-- Use os.time() for broader compatibility during early startup
-				math.randomseed(math.floor(vim.fn.reltimefloat(vim.fn.reltime()) * 1000000))
-
-				-- Generate the base colors using our custom hue generator
-				local base_colors = hues.gen_random_base_colors({
-					gen_hue = generate_allowed_hue,
-				})
-				-- Setup mini.hues with the generated colors.
-				hues.setup(base_colors)
+			local function set_additional_highlight()
 				-- Set additional highlights
 				-- constructing line number highlight style by combining fg with bg of cursorline
 				local line_nr_bg = vim.api.nvim_get_hl(0, { name = "CursorLine", link = false }).bg
@@ -52,6 +42,19 @@ return {
 				vim.api.nvim_set_hl(0, "MiniTablineTrunc", tabline_trunc)
 				-- Keywords highlight
 				vim.api.nvim_set_hl(0, "Statement", { fg = "#E1914C" })
+			end
+
+			function _G.load_random_hues()
+				-- Use os.time() for broader compatibility during early startup
+				math.randomseed(math.floor(vim.fn.reltimefloat(vim.fn.reltime()) * 1000000))
+
+				-- Generate the base colors using our custom hue generator
+				local base_colors = hues.gen_random_base_colors({
+					gen_hue = generate_allowed_hue,
+				})
+				-- Setup mini.hues with the generated colors.
+				hues.setup(base_colors)
+				set_additional_highlight()
 			end
 
 			-- enable colorscheme
@@ -101,6 +104,7 @@ return {
 							end,
 						})
 						hues.setup(base_colors)
+						set_additional_highlight()
 						if i == #my_hues then
 							is_animating = false
 						end
@@ -116,6 +120,12 @@ return {
 				pattern = "*", -- Apply to all buffers/filetypes. Adjust if needed.
 				callback = function(args)
 					local bufnr = args.buf
+					-- on first load
+					if not last_file_bufnr then
+						last_file_bufnr = bufnr
+						return
+					end
+
 					-- Filter for "normal" file buffers
 					-- buflisted(bufnr) == 1: Is it a user-interactable buffer?
 					-- vim.bo[bufnr].buftype == "": Is it a normal buffer (not 'nofile', 'prompt', 'help', etc.)?
