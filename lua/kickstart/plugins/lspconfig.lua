@@ -71,7 +71,9 @@ return {
 				--  the definition of its *type*, not where it was *defined*.
 				map("glt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 
-				map("r", vim.lsp.buf.hover, "Hover information")
+				vim.keymap.set("n", "r", function()
+					vim.lsp.buf.hover({ border = "rounded" })
+				end)
 
 				-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
 				---@param client vim.lsp.Client

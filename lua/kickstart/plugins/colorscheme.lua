@@ -21,6 +21,7 @@ return {
 			local function set_additional_highlight()
 				-- Set additional highlights
 				-- constructing line number highlight style by combining fg with bg of cursorline
+				local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg
 				local line_nr_bg = vim.api.nvim_get_hl(0, { name = "CursorLine", link = false }).bg
 				-- constructing tabline colors to keep their default and only append bg
 				local tabline_current = vim.api.nvim_get_hl(0, { name = "MiniTablineCurrent", link = false })
@@ -42,6 +43,9 @@ return {
 				vim.api.nvim_set_hl(0, "MiniTablineTrunc", tabline_trunc)
 				-- Keywords highlight
 				vim.api.nvim_set_hl(0, "Statement", { fg = "#E1914C" })
+				-- Neotree float border
+				vim.api.nvim_set_hl(0, "NeoTreeFloatBorder", { bg = normal_bg })
+				vim.api.nvim_set_hl(0, "NeoTreeFloatTitle", { bg = normal_bg })
 			end
 
 			function _G.load_random_hues()

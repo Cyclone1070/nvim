@@ -16,6 +16,7 @@ return {
 		{ "<leader>b", ":Neotree toggle float buffers<CR>", desc = "Git status", silent = true },
 	},
 	opts = {
+		popup_border_style = "rounded",
 		filesystem = {
 			follow_current_file = { enabled = true },
 		},

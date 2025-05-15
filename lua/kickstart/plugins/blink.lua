@@ -59,6 +59,9 @@ return { -- Autocompletion
 			list = {
 				selection = { preselect = false, auto_insert = true },
 			},
+			menu = {
+				border = "rounded",
+			},
 		},
 
 		sources = {
