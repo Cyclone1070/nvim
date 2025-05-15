@@ -1,38 +1,34 @@
 return {
+	{ "echasnovski/mini.colors", opts = {} },
 	{
 		"echasnovski/mini.hues",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		config = function()
-			function _G.load_random_hues()
-				local hues = require("mini.hues")
+			local hues = require("mini.hues")
 
+			-- Define the custom function to generate hues, avoiding pinks and reds
+			local function generate_allowed_hue()
+				-- Define the hue range to ALLOW (inclusive)
+				-- This excludes reds (0-15) and pinks/pink-reds (310-359)
+				local min_allowed_hue = 16 -- Start after red, in orange territory
+				local max_allowed_hue = 309 -- Stop before pink/magenta territory
+
+				-- Directly generate a random hue within the allowed range
+				local hue = math.random(min_allowed_hue, max_allowed_hue)
+				-- Return the allowed hue
+				return hue
+			end
+
+			function _G.load_random_hues()
 				-- Use os.time() for broader compatibility during early startup
 				math.randomseed(math.floor(vim.fn.reltimefloat(vim.fn.reltime()) * 1000000))
-
-				-- Define the custom function to generate hues, avoiding pinks and reds
-				local function generate_allowed_hue()
-					-- Define the hue range to ALLOW (inclusive)
-					-- This excludes reds (0-15) and pinks/pink-reds (310-359)
-					local min_allowed_hue = 16 -- Start after red, in orange territory
-					local max_allowed_hue = 309 -- Stop before pink/magenta territory
-
-					-- Directly generate a random hue within the allowed range
-					local hue = math.random(min_allowed_hue, max_allowed_hue)
-
-					-- Return the allowed hue
-					return hue
-				end
 
 				-- Generate the base colors using our custom hue generator
 				local base_colors = hues.gen_random_base_colors({
 					gen_hue = generate_allowed_hue,
 				})
-
 				-- Setup mini.hues with the generated colors.
-				hues.setup({
-					background = base_colors.background,
-					foreground = base_colors.foreground,
-				})
+				hues.setup(base_colors)
 				-- Set additional highlights
 				-- constructing line number highlight style by combining fg with bg of cursorline
 				local line_nr_bg = vim.api.nvim_get_hl(0, { name = "CursorLine", link = false }).bg
@@ -57,9 +53,61 @@ return {
 				-- Keywords highlight
 				vim.api.nvim_set_hl(0, "Statement", { fg = "#E1914C" })
 			end
-			_G.load_random_hues()
+
+			-- enable colorscheme
+			vim.cmd.colorscheme("minirandom")
 
 			-- autocmd to change color on buffer change
+			-- get the hue animation steps
+			local function generate_hue_transition_steps()
+				-- get the current hue
+				local miniColors = require("mini.colors")
+				local current_scheme = miniColors.get_colorscheme()
+				local normal_bg_oklch = miniColors.convert(current_scheme.groups.Normal.bg, "oklch")
+
+				if normal_bg_oklch == nil then
+					return "no current hue"
+				end
+
+				local old_hue = math.floor(normal_bg_oklch.h + 0.5)
+				local new_hue = generate_allowed_hue()
+
+				local step = (new_hue - old_hue) / 16
+
+				local transition_hues = {}
+				for current_hue = old_hue, new_hue, step do
+					table.insert(transition_hues, math.floor(current_hue + 0.5))
+				end
+				return transition_hues
+			end
+			local is_animating = false
+			-- animate function to put inside autocmd callback
+			local function animate_scheme()
+				if is_animating then
+					return
+				end
+
+				is_animating = true
+				local my_hues = generate_hue_transition_steps()
+				local delay_per_item_ms = 25
+
+				for i, current_hue in ipairs(my_hues) do
+					local current_delay_ms = (i - 1) * delay_per_item_ms
+
+					vim.defer_fn(function()
+						local base_colors = hues.gen_random_base_colors({
+							gen_hue = function()
+								return current_hue
+							end,
+						})
+						hues.setup(base_colors)
+						if i == #my_hues then
+							is_animating = false
+						end
+					end, current_delay_ms)
+				end
+			end
+
 			local last_file_bufnr
 			local myBufferEventsGroup = vim.api.nvim_create_augroup("MyBufferEventActions", { clear = true })
 
@@ -78,7 +126,7 @@ return {
 						and last_file_bufnr ~= bufnr
 					then
 						last_file_bufnr = bufnr
-						_G.load_random_hues()
+						animate_scheme()
 					end
 				end,
 			})
