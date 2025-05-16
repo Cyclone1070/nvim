@@ -106,6 +106,7 @@ map("v", "<", "<gv", opts)
 map("v", ">", ">gv", opts)
 -- Toggle comments
 map("n", "<leader>c", "gcc")
+unmap("n", "gc")
 unmap("n", "gcc")
 map("v", "<leader>c", "gc")
 unmap("v", "gc")
