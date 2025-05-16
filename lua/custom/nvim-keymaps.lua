@@ -1,5 +1,4 @@
 local map = vim.keymap.set
-local unmap = vim.keymap.del
 local opts = { noremap = true }
 -- [[ Kickstart Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -104,12 +103,6 @@ map("v", "K", "5gk", opts)
 -- Keep Visual mode active after indent/unindent
 map("v", "<", "<gv", opts)
 map("v", ">", ">gv", opts)
--- Toggle comments
-map("n", "<leader>c", "gcc")
-unmap("n", "gc")
-unmap("n", "gcc")
-map("v", "<leader>c", "gc")
-unmap("v", "gc")
 -- Map line moves
 map("n", "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })
 map("n", "<A-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move Up" })
