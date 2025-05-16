@@ -13,7 +13,7 @@ if vim.g.neovide then -- Check if Neovim is running inside Neovide
 	-- set font to comicshanns
 	vim.opt.guifont = "ComicShannsMono Nerd Font Mono:h15"
 	vim.g.neovide_hide_mouse_when_typing = true
-	vim.g.neovide_cursor_vfx_mode = { "torpedo", "railgun", "pixeldust" }
+	vim.g.neovide_cursor_vfx_mode = { "pixiedust" }
 	vim.g.neovide_floating_shadow = false
 end
 -- Globally disable auto-continuation of comments on new lines for all filetypes
