@@ -1,7 +1,10 @@
 return { -- Collection of various small independent plugins/modules
 	"echasnovski/mini.nvim",
 	key = {
+		-- disable useless s key to make space for mini.surround
 		{ "s", mode = { "n", "c" }, "<Nop>" },
+		-- leader n to clear notification
+		{ "<leader>n", require("mini.notify").clear() },
 	},
 	config = function()
 		-- Better Around/Inside textobjects
@@ -20,6 +23,9 @@ return { -- Collection of various small independent plugins/modules
 		-- - sd'   - [S]urround [D]elete [']quotes
 		-- - sr)'  - [S]urround [R]eplace [)] [']
 		require("mini.surround").setup()
+
+		-- mini notify
+		require("mini.notify").setup()
 
 		-- tabline
 		require("mini.tabline").setup()

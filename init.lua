@@ -214,6 +214,7 @@ require("lazy").setup({
 	-- See `:help gitsigns` to understand what the configuration keys do
 
 	{ import = "custom.plugins" },
+	{ import = "custom.plugins.webdev" },
 	{ import = "kickstart.plugins" },
 
 	-- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`

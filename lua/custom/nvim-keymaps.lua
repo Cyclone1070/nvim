@@ -81,11 +81,11 @@ map("v", "E", "$", opts)
 -- remap go to start of line
 map({ "n", "o" }, "B", "^", opts)
 map("v", "B", "^", opts)
--- Move cursor in insert mode
-map("i", "<C-h>", "<Left>", opts)
-map("i", "<C-l>", "<Right>", opts)
-map("i", "<C-j>", "<Down>", opts)
-map("i", "<C-k>", "<Up>", opts)
+-- Move cursor in insert and cmd mode
+map({ "i", "c" }, "<C-h>", "<Left>", opts)
+map({ "i", "c" }, "<C-l>", "<Right>", opts)
+map({ "i", "c" }, "<C-j>", "<Down>", opts)
+map({ "i", "c" }, "<C-k>", "<Up>", opts)
 -- move current window around
 vim.keymap.set("n", "<C-w>h", "<C-w>H", { desc = "Move window left" })
 vim.keymap.set("n", "<C-w>j", "<C-w>J", { desc = "Move window down" })
