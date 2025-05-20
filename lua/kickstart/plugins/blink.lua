@@ -36,12 +36,37 @@ return { -- Autocompletion
 	opts = {
 		keymap = {
 			-- Override <C-k> with <C-r> to enable cursor navigation in insert mode
-			["<C-k>"] = {},
 			["<C-r>"] = { "show_signature", "hide_signature", "fallback" },
 			-- Tab to select next items, selected item is auto inserted
-			preset = "super-tab",
-			["<Tab>"] = { "select_next", "fallback" },
-			["<S-Tab>"] = { "select_prev", "fallback" },
+			preset = "none",
+			["<C-j>"] = { "select_next", "fallback" },
+			["<C-k>"] = { "select_prev", "fallback" },
+			["<C-h>"] = { "cancel", "fallback" },
+			["<C-l>"] = { "accept", "fallback" },
+			["<Tab>"] = {
+				function(cmp)
+					if not cmp.is_visible() then
+						return
+					end
+
+					local keyword = require("blink.cmp.completion.list").context.get_keyword()
+					local accept_index = nil
+
+					for index, item in ipairs(cmp.get_items()) do
+						if item.client_name == "emmet_ls" or item.source_id == "snippets" then
+							print("accepted")
+							accept_index = index
+							break
+						end
+					end
+
+					if accept_index then
+						cmp.accept({ index = accept_index })
+					else
+						cmp.accept({ index = 1 })
+					end
+				end,
+			},
 			["<Down>"] = {},
 			["<Up>"] = {},
 		},
@@ -55,7 +80,7 @@ return { -- Autocompletion
 		completion = {
 			-- By default, you may press `<c-space>` to show the documentation.
 			-- Optionally, set `auto_show = true` to show the documentation after a delay.
-			documentation = { auto_show = false, auto_show_delay_ms = 500 },
+			documentation = { auto_show = true, auto_show_delay_ms = 500 },
 			list = {
 				selection = { preselect = false, auto_insert = true },
 			},

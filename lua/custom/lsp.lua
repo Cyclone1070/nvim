@@ -20,7 +20,12 @@ return {
 	-- But for many setups, the LSP (`ts_ls`) will work just fine
 	-- ts_ls = {},
 	--
+	-- Web dev
 	tailwindcss = {},
+	html = {},
+	cssls = {},
+	emmet_ls = {},
+	-- lua
 	lua_ls = {
 		-- cmd = { ... },
 		-- filetypes = { ... },
