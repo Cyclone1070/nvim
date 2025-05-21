@@ -51,6 +51,7 @@ return { -- Autocompletion
 
 					local keyword = require("blink.cmp.completion.list").context.get_keyword()
 					local accept_index = nil
+					local selected_item = cmp.get_selected_item()
 
 					for index, item in ipairs(cmp.get_items()) do
 						if item.client_name == "emmet_ls" or item.source_id == "snippets" then
@@ -60,11 +61,14 @@ return { -- Autocompletion
 						end
 					end
 
-					if accept_index then
+					if selected_item then
+						cmp.accept()
+					elseif accept_index then
 						cmp.accept({ index = accept_index })
 					else
 						cmp.accept({ index = 1 })
 					end
+					return true
 				end,
 				"fallback",
 			},
@@ -88,7 +92,13 @@ return { -- Autocompletion
 			menu = {
 				border = "rounded",
 			},
-			ghost_text = { enabled = true },
+			ghost_text = {
+				enabled = true,
+				auto_show = true,
+				show_with_menu = true,
+				show_without_selection = true,
+				show_with_selection = false,
+			},
 		},
 
 		sources = {

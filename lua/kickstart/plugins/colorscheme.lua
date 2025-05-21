@@ -46,6 +46,8 @@ return {
 				-- Neotree float border
 				vim.api.nvim_set_hl(0, "NeoTreeFloatBorder", { bg = normal_bg })
 				vim.api.nvim_set_hl(0, "NeoTreeFloatTitle", { bg = normal_bg })
+				-- Blink cmp ghost text
+				vim.api.nvim_set_hl(0, "BlinkCmpGhostText", { link = "Comment" })
 			end
 
 			function _G.load_random_hues()
