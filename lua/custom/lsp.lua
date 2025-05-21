@@ -37,6 +37,12 @@ return {
 				},
 				-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
 				-- diagnostics = { disable = { 'missing-fields' } },
+
+				hover = {
+					enable = false,
+					enumsLimit = 100000,
+					previewFields = 100000,
+				},
 			},
 		},
 	},

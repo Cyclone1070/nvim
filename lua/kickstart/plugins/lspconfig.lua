@@ -171,7 +171,6 @@ return {
 		--  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
 		--  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
-
 		-- load the lsp table from custom/lsp.lua
 		local servers = require("custom.lsp")
 
@@ -180,11 +179,13 @@ return {
 			automatic_installation = false,
 			handlers = {
 				function(server_name)
+					print("ran")
 					local server = servers[server_name] or {}
 					-- This handles overriding only values explicitly passed
 					-- by the server configuration above. Useful when disabling
 					-- certain features of an LSP (for example, turning off formatting for ts_ls)
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+					print(vim.inspect(server))
 					require("lspconfig")[server_name].setup(server)
 				end,
 			},

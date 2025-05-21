@@ -66,6 +66,7 @@ return { -- Autocompletion
 						cmp.accept({ index = 1 })
 					end
 				end,
+				"fallback",
 			},
 			["<Down>"] = {},
 			["<Up>"] = {},
@@ -87,6 +88,7 @@ return { -- Autocompletion
 			menu = {
 				border = "rounded",
 			},
+			ghost_text = { enabled = true },
 		},
 
 		sources = {
