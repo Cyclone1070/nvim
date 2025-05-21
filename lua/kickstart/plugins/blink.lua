@@ -94,7 +94,6 @@ return { -- Autocompletion
 			},
 			ghost_text = {
 				enabled = true,
-				auto_show = true,
 				show_with_menu = true,
 				show_without_selection = true,
 				show_with_selection = false,
