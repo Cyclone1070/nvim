@@ -95,6 +95,9 @@ map("n", "J", "5gj", opts)
 map("n", "K", "5gk", opts)
 map("v", "J", "5gj", opts)
 map("v", "K", "5gk", opts)
+-- C-J and C-K to merge lines
+map("n", "<C-j>", "J", opts)
+map("n", "<C-k>", "K", opts)
 -- Keep Visual mode active after indent/unindent
 map("v", "<", "<gv", opts)
 map("v", ">", ">gv", opts)

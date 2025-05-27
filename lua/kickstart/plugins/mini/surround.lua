@@ -1,7 +1,7 @@
 return {
 	"echasnovski/mini.surround",
-	opts = {},
-	keys = {
-		{ "s", "<Nop>" },
-	},
+	config = function()
+		require("mini.surround").setup()
+		vim.keymap.set("n", "s", "<Nop>")
+	end,
 }
