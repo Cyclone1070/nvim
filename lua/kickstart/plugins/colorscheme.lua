@@ -81,6 +81,10 @@ return {
 				local old_hue = math.floor(normal_bg_oklch.h + 0.5)
 				local new_hue = generate_allowed_hue()
 
+				while new_hue == old_hue do
+					new_hue = generate_allowed_hue()
+				end
+
 				local step = (new_hue - old_hue) / 16
 
 				local transition_hues = {}
