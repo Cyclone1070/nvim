@@ -3,8 +3,6 @@ return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
 		"williamboman/mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 		-- Useful status updates for LSP.
 		-- NOTE: `opts = {}` is the same as calling `require('j-hui/fidget.nvim').setup({})`
@@ -21,6 +19,7 @@ return {
 		--    That is to say, every time a new file is opened that is associated with
 		--    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
 		--    function will be executed to configure the current buffer
+		--  This function wil not override server specific onattach
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 			callback = function(event)
@@ -172,23 +171,52 @@ return {
 		--  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
 		-- load the lsp table from custom/lsp.lua
-		local servers = require("custom.lsp")
+		local servers_status, servers_to_configure = pcall(require, "custom.lsp")
+		if not servers_status or type(servers_to_configure) ~= "table" then
+			vim.notify(
+				"LSP: Could not load server configurations from custom.lsp. No LSPs will be set up.",
+				vim.log.levels.WARN
+			)
+			servers_to_configure = {}
+		end
 
-		require("mason-lspconfig").setup({
-			ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-			automatic_installation = false,
-			handlers = {
-				function(server_name)
-					print("ran")
-					local server = servers[server_name] or {}
-					-- This handles overriding only values explicitly passed
-					-- by the server configuration above. Useful when disabling
-					-- certain features of an LSP (for example, turning off formatting for ts_ls)
-					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-					print(vim.inspect(server))
-					require("lspconfig")[server_name].setup(server)
-				end,
-			},
-		})
+		-- REMOVE: local lspconfig_instance = require('lspconfig') -- Not needed for setup in this new way
+
+		for server_name, user_server_config in pairs(servers_to_configure) do
+			if type(user_server_config) == "table" then
+				local server_opts = vim.deepcopy(user_server_config)
+
+				-- Apply global capabilities, allowing server-specific ones to override
+				server_opts.capabilities =
+					vim.tbl_deep_extend("force", {}, capabilities, server_opts.capabilities or {})
+
+				-- Configure the server using Neovim's core LSP config function.
+				-- nvim-lspconfig makes its default configurations available through this.
+				vim.lsp.config(server_name, server_opts)
+
+				-- Enable the server. This tells Neovim to activate this LSP for relevant filetypes.
+				-- No need to check lspconfig_instance.configs anymore.
+				-- If nvim-lspconfig provides a config for server_name, vim.lsp.enable will use it
+				-- along with your overrides from vim.lsp.config().
+				local success, err = pcall(vim.lsp.enable, server_name)
+				if not success then
+					vim.notify(
+						"LSP: Failed to enable server '"
+							.. server_name
+							.. "'. Error: "
+							.. tostring(err)
+							.. ". Ensure '"
+							.. server_name
+							.. "' is a valid LSP name provided by nvim-lspconfig or defined via vim.lsp.config().",
+						vim.log.levels.WARN
+					)
+				end
+			else
+				vim.notify(
+					"LSP: Configuration for server '" .. server_name .. "' in custom.lsp is not a table. Skipping.",
+					vim.log.levels.WARN
+				)
+			end
+		end
 	end,
 }

@@ -39,6 +39,7 @@ return {
 		"williamboman/mason.nvim",
 		cmd = "Mason",
 		opts = {
+			ensure_installed = all_packages,
 			ui = {
 				-- border and icons
 				border = "rounded",
@@ -49,15 +50,5 @@ return {
 				},
 			},
 		},
-	},
-	{
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		config = function()
-			if #all_packages > 0 then
-				require("mason-tool-installer").setup({
-					ensure_installed = all_packages,
-				})
-			end
-		end,
 	},
 }

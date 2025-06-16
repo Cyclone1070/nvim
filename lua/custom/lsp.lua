@@ -39,7 +39,6 @@ return {
 				-- diagnostics = { disable = { 'missing-fields' } },
 
 				hover = {
-					enable = false,
 					enumsLimit = 100000,
 					previewFields = 100000,
 				},
