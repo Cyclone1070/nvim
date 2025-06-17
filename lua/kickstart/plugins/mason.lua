@@ -35,11 +35,11 @@ table.move(unique_formatters, 1, #unique_formatters, #all_packages + 1, all_pack
 table.move(unique_linters, 1, #unique_linters, #all_packages + 1, all_packages)
 
 return {
+	-- setup mason engine, required
 	{
 		"williamboman/mason.nvim",
 		cmd = "Mason",
 		opts = {
-			ensure_installed = all_packages,
 			ui = {
 				-- border and icons
 				border = "rounded",
@@ -50,5 +50,19 @@ return {
 				},
 			},
 		},
+	},
+	-- setup auto installation, require mason-lspconfig for package namings compatibility
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		dependencies = {
+			"mason-org/mason-lspconfig.nvim",
+		},
+		config = function()
+			if #all_packages > 0 then
+				require("mason-tool-installer").setup({
+					ensure_installed = all_packages,
+				})
+			end
+		end,
 	},
 }

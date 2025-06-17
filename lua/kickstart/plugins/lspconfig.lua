@@ -3,7 +3,7 @@ return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
 		"williamboman/mason.nvim",
-
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		-- Useful status updates for LSP.
 		-- NOTE: `opts = {}` is the same as calling `require('j-hui/fidget.nvim').setup({})`
 		-- { "j-hui/fidget.nvim", opts = {} },
