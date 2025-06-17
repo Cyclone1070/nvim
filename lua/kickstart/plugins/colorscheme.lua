@@ -50,7 +50,8 @@ return {
 				vim.api.nvim_set_hl(0, "BlinkCmpGhostText", { link = "Comment" })
 			end
 
-			function _G.load_random_hues()
+			-- function to be called in colorscheme
+			function _G.load_initial_random_hues()
 				-- Use os.time() for broader compatibility during early startup
 				math.randomseed(math.floor(vim.fn.reltimefloat(vim.fn.reltime()) * 1000000))
 
@@ -71,8 +72,11 @@ return {
 			local function generate_hue_transition_steps()
 				-- get the current hue
 				local miniColors = require("mini.colors")
-				local current_scheme = miniColors.get_colorscheme()
-				local normal_bg_oklch = miniColors.convert(current_scheme.groups.Normal.bg, "oklch")
+				local normal_bg_hex = string.format(
+					"#%06x",
+					vim.api.nvim_get_hl(0, { name = "Normal", link = false}).bg
+				)
+				local normal_bg_oklch = miniColors.convert(normal_bg_hex, "oklch")
 
 				if normal_bg_oklch == nil then
 					return "no current hue"
