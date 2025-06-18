@@ -8,7 +8,7 @@ return {
 				auto_trigger = true,
 				debounce = 75,
 				keymap = {
-					accept = "<C-y>",
+					accept = "<C-c>",
 					accept_word = false, -- Disable accepting word suggestions
 					accept_line = false, -- Disable accepting line suggestions
 				},
