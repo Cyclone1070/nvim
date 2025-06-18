@@ -72,10 +72,8 @@ return {
 			local function generate_hue_transition_steps()
 				-- get the current hue
 				local miniColors = require("mini.colors")
-				local normal_bg_hex = string.format(
-					"#%06x",
-					vim.api.nvim_get_hl(0, { name = "Normal", link = false}).bg
-				)
+				local normal_bg_hex =
+					string.format("#%06x", vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg)
 				local normal_bg_oklch = miniColors.convert(normal_bg_hex, "oklch")
 
 				if normal_bg_oklch == nil then
@@ -98,15 +96,16 @@ return {
 				return transition_hues
 			end
 			local is_animating = false
+			local is_neon = false
 			-- animate function to put inside autocmd callback
-			local function animate_scheme()
+			local function animate_scheme(delay_per_item_ms)
 				if is_animating then
 					return
 				end
 
 				is_animating = true
 				local my_hues = generate_hue_transition_steps()
-				local delay_per_item_ms = 25
+				-- local delay_per_item_ms = 25
 
 				for i, current_hue in ipairs(my_hues) do
 					local current_delay_ms = (i - 1) * delay_per_item_ms
@@ -121,10 +120,24 @@ return {
 						set_additional_highlight()
 						if i == #my_hues then
 							is_animating = false
+							if is_neon then
+								animate_scheme(400)
+							end
 						end
 					end, current_delay_ms)
 				end
 			end
+			-- Create a user command to toggle neon animation
+			local function toggle_neon()
+				is_neon = not is_neon
+				if is_neon and not is_animating then
+					animate_scheme(400)
+				end
+			end
+			vim.api.nvim_create_user_command("Neon", toggle_neon, {
+				nargs = 0,
+				desc = "Toggle neon color scheme animation",
+			})
 
 			local last_file_bufnr
 			local myBufferEventsGroup = vim.api.nvim_create_augroup("MyBufferEventActions", { clear = true })
@@ -150,7 +163,7 @@ return {
 						and last_file_bufnr ~= bufnr
 					then
 						last_file_bufnr = bufnr
-						animate_scheme()
+						animate_scheme(25)
 					end
 				end,
 			})
