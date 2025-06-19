@@ -90,6 +90,8 @@ vim.keymap.set("n", "<C-w><CR>", "<C-w>_<C-w>|", { desc = "Maximize window" })
 -- Remap to moving based on visual lines
 map("n", "j", "gj", opts)
 map("n", "k", "gk", opts)
+map("v", "j", "gj", opts)
+map("v", "k", "gk", opts)
 -- Quick move cursors
 map("n", "J", "5gj", opts)
 map("n", "K", "5gk", opts)
