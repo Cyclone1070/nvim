@@ -5,6 +5,7 @@ return {
 	init = false,
 	opts = function()
 		local builtin = require("telescope.builtin")
+		local file_browser = require("telescope").extensions.file_browser.file_browser
 		local dashboard = require("alpha.themes.dashboard")
 		local logo = [[
                                    .-----.           
@@ -24,13 +25,13 @@ return {
 		dashboard.section.header.val = vim.split(logo, "\n")
     -- stylua: ignore
     dashboard.section.buttons.val = {
-      dashboard.button("f", " " .. " Find file",       builtin.find_files),
-      dashboard.button("n", " " .. " New file",        [[<cmd> ene <BAR> startinsert <cr>]]),
-      dashboard.button("r", " " .. " Recent files",    builtin.oldfiles),
-      dashboard.button("g", " " .. " Find text",       builtin.live_grep),
-      dashboard.button("c", " " .. " Config",          function() builtin.find_files({ cwd = vim.fn.stdpath("config") }) end),
+      dashboard.button("f", " " .. " Find file", file_browser),
+      dashboard.button("n", " " .. " New file", [[<cmd> ene <BAR> startinsert <cr>]]),
+      dashboard.button("r", " " .. " Recent files", builtin.oldfiles),
+      dashboard.button("g", " " .. " Find text", builtin.live_grep),
+      dashboard.button("c", " " .. " Config", function() file_browser({ cwd = vim.fn.stdpath("config") }) end),
       dashboard.button("s", " " .. " Restore Session", [[<cmd> lua require("persistence").load() <cr>]]),
-      dashboard.button("q", " " .. " Quit",            "<cmd> qa <cr>"),
+      dashboard.button("q", " " .. " Quit", "<cmd> qa <cr>"),
     }
 		for _, button in ipairs(dashboard.section.buttons.val) do
 			button.opts.hl = "AlphaButtons"

@@ -43,9 +43,6 @@ return {
 				vim.api.nvim_set_hl(0, "MiniTablineTrunc", tabline_trunc)
 				-- Keywords highlight
 				vim.api.nvim_set_hl(0, "Statement", { fg = "#E1914C" })
-				-- Neotree float border
-				vim.api.nvim_set_hl(0, "NeoTreeFloatBorder", { bg = normal_bg })
-				vim.api.nvim_set_hl(0, "NeoTreeFloatTitle", { bg = normal_bg })
 				-- Blink cmp ghost text
 				vim.api.nvim_set_hl(0, "BlinkCmpGhostText", { link = "Comment" })
 			end

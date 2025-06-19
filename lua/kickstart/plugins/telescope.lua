@@ -22,6 +22,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
 		{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
 	},
 	config = function()
+		-- file browser config instance
+		local fb_action = require("telescope").extensions.file_browser.actions
 		-- -- Uncomment to handle winborder setting
 
 		-- vim.api.nvim_create_autocmd("User", {
@@ -67,6 +69,28 @@ return { -- Fuzzy Finder (files, lsp, etc)
 					prompt_position = "top",
 				},
 				sorting_strategy = "ascending",
+				mappings = {
+					n = {
+						["q"] = require("telescope.actions").close,
+						["l"] = require("telescope.actions").select_default,
+						["J"] = require("telescope.actions").toggle_selection
+							+ require("telescope.actions").move_selection_next,
+						["K"] = require("telescope.actions").toggle_selection
+							+ require("telescope.actions").move_selection_previous,
+						["i"] = function(prompt_bufnr)
+							-- First, clear all text in the prompt buffer
+							vim.api.nvim_buf_set_lines(prompt_bufnr, 0, -1, false, { "" })
+							-- Then, enter insert mode
+							vim.cmd.startinsert()
+						end,
+					},
+					i = {
+						["<C-j>"] = require("telescope.actions").toggle_selection
+							+ require("telescope.actions").move_selection_next,
+						["<C-k>"] = require("telescope.actions").toggle_selection
+							+ require("telescope.actions").move_selection_previous,
+					},
+				},
 			},
 			pickers = {
 				help_tags = {
@@ -78,6 +102,20 @@ return { -- Fuzzy Finder (files, lsp, etc)
 				},
 			},
 			extensions = {
+				file_browser = {
+					grouped = true,
+					auto_depth = 50,
+					mappings = {
+						["n"] = {
+							["h"] = fb_action.goto_parent_dir,
+							["H"] = fb_action.toggle_hidden,
+						},
+						["i"] = {
+							["C-h"] = fb_action.goto_parent_dir,
+							["C-H"] = fb_action.toggle_hidden,
+						},
+					},
+				},
 				["ui-select"] = {
 					require("telescope.themes").get_dropdown(),
 				},
@@ -87,12 +125,18 @@ return { -- Fuzzy Finder (files, lsp, etc)
 		-- Enable Telescope extensions if they are installed
 		pcall(require("telescope").load_extension, "fzf")
 		pcall(require("telescope").load_extension, "ui-select")
+		pcall(require("telescope").load_extension, "file_browser")
 
 		-- See `:help telescope.builtin`
 		local builtin = require("telescope.builtin")
 		vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 		vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-		vim.keymap.set("n", "<leader><leader>", builtin.find_files, { desc = "[S]earch [F]iles" })
+		vim.keymap.set(
+			"n",
+			"<leader><leader>",
+			require("telescope").extensions.file_browser.file_browser,
+			{ desc = "[S]earch [F]iles" }
+		)
 		vim.keymap.set("n", "<leader>sb", builtin.buffers, { desc = "[S]earch [B]uffers" })
 		vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
 		vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
