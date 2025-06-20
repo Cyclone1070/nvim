@@ -103,6 +103,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
 			},
 			extensions = {
 				file_browser = {
+					display_stat = { date = true, size = true },
+					hide_parent_dir = true,
 					grouped = true,
 					auto_depth = 50,
 					mappings = {
