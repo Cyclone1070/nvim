@@ -167,7 +167,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
 		-- Shortcut for searching your Neovim configuration files
 		vim.keymap.set("n", "<leader>sn", function()
-			builtin.find_files({ cwd = vim.fn.stdpath("config") })
+			require("telescope").extensions.file_browser.file_browser({ cwd = vim.fn.stdpath("config") })
 		end, { desc = "[S]earch [N]eovim files" })
 	end,
 }

@@ -28,10 +28,33 @@ return {
 		"CopilotC-Nvim/CopilotChat.nvim",
 		branch = "main",
 		cmd = "CopilotChat",
+		keys = {
+			{
+				"<leader>i",
+				function()
+					require("CopilotChat").toggle({
+						model = "claude-3.7-sonnet-thought",
+						context = { "files", "buffer:*" },
+					})
+				end,
+				desc = "Toggle CopilotChat",
+			},
+		},
 		opts = function()
 			local user = vim.env.USER or "User"
 			user = user:sub(1, 1):upper() .. user:sub(2)
 			return {
+				mappings = {
+					submit_prompt = {
+						insert = "<C-CR>",
+						normal = "<CR>",
+					},
+
+					reset = {
+						normal = "<C-i>",
+						insert = "<C-i>",
+					},
+				},
 				auto_insert_mode = true,
 				question_header = "  " .. user .. " ",
 				answer_header = "  Copilot ",
