@@ -41,6 +41,17 @@ return {
 				-- or a suggestion from your LSP for this to activate.
 				map("<leader>la", vim.lsp.buf.code_action, "[L]sp Code [A]ction", { "n", "x" })
 
+				-- Add a mapping to organize imports and add missing ones.
+				map("<leader>li", function()
+					vim.lsp.buf.code_action({
+						-- The context is the crucial part, providing diagnostics is required.
+						context = {
+							only = { "source.organizeImports" },
+							diagnostics = vim.diagnostic.get(event.buf), -- Pass current diagnostics
+						},
+						apply = true, -- Automatically apply the first available action
+					})
+				end, "[L]sp Auto [I]mport")
 				-- Find references for the word under your cursor.
 				map("glr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 
@@ -70,7 +81,10 @@ return {
 				--  the definition of its *type*, not where it was *defined*.
 				map("glt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 
-				vim.keymap.set("n", "r", vim.lsp.buf.hover)
+				vim.keymap.set("n", "r", function()
+					vim.lsp.buf.hover()
+					vim.diagnostic.open_float()
+				end)
 
 				-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
 				---@param client vim.lsp.Client

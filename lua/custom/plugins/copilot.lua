@@ -33,7 +33,7 @@ return {
 				"<leader>i",
 				function()
 					require("CopilotChat").toggle({
-						model = "claude-3.7-sonnet-thought",
+						model = "claude-sonnet-4",
 						context = { "files", "buffer:*" },
 					})
 				end,

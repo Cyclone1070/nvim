@@ -62,6 +62,8 @@ end
 -- enter command mode with ;
 map("n", ";", ":", opts)
 map("v", ";", ":", opts)
+-- mapping for search and replace
+map("n", "<leader>r", ":%s/", { desc = "Search and Replace", noremap = true })
 -- remap v to exit visual mode
 map("v", "v", "<ESC>")
 -- only paste from yank register
