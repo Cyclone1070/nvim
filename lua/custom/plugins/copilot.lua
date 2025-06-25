@@ -33,7 +33,6 @@ return {
 				"<leader>i",
 				function()
 					require("CopilotChat").toggle({
-						model = "gemini-2.5-pro-preview-06-05",
 						context = { "files", "buffer:*" },
 					})
 				end,
@@ -44,6 +43,7 @@ return {
 			local user = vim.env.USER or "User"
 			user = user:sub(1, 1):upper() .. user:sub(2)
 			return {
+				model = "gemini-2.5-pro-preview-06-05",
 				mappings = {
 					submit_prompt = {
 						insert = "<C-CR>",
@@ -55,24 +55,25 @@ return {
 						insert = "<C-i>",
 					},
 				},
-				auto_insert_mode = true,
-				question_header = "  " .. user .. " ",
+				question_header = "  " .. "Cyclone1070 ",
 				answer_header = "  Copilot ",
 				window = {
-					width = 0.4,
+					layout = "float",
+					border = "rounded",
+					width = 0.7,
 				},
 			}
 		end,
 		config = function(_, opts)
 			local chat = require("CopilotChat")
 
-			vim.api.nvim_create_autocmd("BufEnter", {
-				pattern = "copilot-chat",
-				callback = function()
-					vim.opt_local.relativenumber = false
-					vim.opt_local.number = false
-				end,
-			})
+			-- vim.api.nvim_create_autocmd("BufEnter", {
+			-- 	pattern = "copilot-chat",
+			-- 	callback = function()
+			-- 		vim.opt_local.relativenumber = false
+			-- 		vim.opt_local.number = false
+			-- 	end,
+			-- })
 
 			chat.setup(opts)
 		end,
