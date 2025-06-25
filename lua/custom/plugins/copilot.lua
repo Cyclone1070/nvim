@@ -33,7 +33,7 @@ return {
 				"<leader>i",
 				function()
 					require("CopilotChat").toggle({
-						model = "claude-sonnet-4",
+						model = "gemini-2.5-pro-preview-06-05",
 						context = { "files", "buffer:*" },
 					})
 				end,

@@ -80,11 +80,10 @@ return {
 				--  Useful when you're not sure what type a variable is and you want to see
 				--  the definition of its *type*, not where it was *defined*.
 				map("glt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
-
-				vim.keymap.set("n", "r", function()
-					vim.lsp.buf.hover()
-					vim.diagnostic.open_float()
-				end)
+				-- Hover display
+				map("r", vim.lsp.buf.hover, "Hove[R]")
+				-- Diagnostic display 
+				map("<leader>ld", vim.diagnostic.open_float, "Hove[R]")
 
 				-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
 				---@param client vim.lsp.Client
