@@ -3,32 +3,7 @@ return { -- Autocompletion
 	event = "VimEnter",
 	version = "1.*",
 	dependencies = {
-		-- Snippet Engine
-		{
-			"L3MON4D3/LuaSnip",
-			version = "2.*",
-			build = (function()
-				-- Build Step is needed for regex support in snippets.
-				-- This step is not supported in many windows environments.
-				-- Remove the below condition to re-enable on windows.
-				if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-					return
-				end
-				return "make install_jsregexp"
-			end)(),
-			dependencies = {
-				-- `friendly-snippets` contains a variety of premade snippets.
-				--    See the README about individual language/framework/plugin snippets:
-				--    https://github.com/rafamadriz/friendly-snippets
-				-- {
-				--   'rafamadriz/friendly-snippets',
-				--   config = function()
-				--     require('luasnip.loaders.from_vscode').lazy_load()
-				--   end,
-				-- },
-			},
-			opts = {},
-		},
+		"L3MON4D3/LuaSnip",
 		"folke/lazydev.nvim",
 	},
 	--- @module 'blink.cmp'
@@ -42,52 +17,13 @@ return { -- Autocompletion
 			["<C-j>"] = { "select_next", "fallback" },
 			["<C-k>"] = { "select_prev", "fallback" },
 			["<C-h>"] = { "cancel", "fallback" },
-			["<C-l>"] = { "accept", "fallback" },
+			["<C-l>"] = { "select_and_accept", "fallback" },
 			["<Tab>"] = {
-				function(cmp)
-					-- jump to snippet if available
-					if cmp.snippet_active({ direction = 1 }) then
-						cmp.snippet_forward()
-						return true
-					end
-					-- otherwise, accept the completion item
-					if not cmp.is_visible() then
-						return
-					end
-
-					local accept_index = nil
-					local selected_item = cmp.get_selected_item()
-
-					for index, item in ipairs(cmp.get_items()) do
-						if item.client_name == "emmet_ls" or item.source_id == "snippets" then
-							accept_index = index
-							break
-						end
-					end
-
-					if selected_item then
-						cmp.accept()
-					elseif accept_index then
-						cmp.accept({ index = accept_index })
-					else
-						cmp.accept({ index = 1 })
-					end
-					return true
-				end,
+				"snippet_forward",
 				"fallback",
 			},
 			["<S-Tab>"] = {
-				function(cmp)
-					if cmp.snippet_active({ direction = -1 }) then
-						cmp.snippet_backward()
-						return true
-					end
-
-					if cmp.is_visible() then
-						cmp.select_prev()
-						return true
-					end
-				end,
+				"snippet_backward",
 				"fallback",
 			},
 			["<Down>"] = {},
@@ -164,7 +100,20 @@ return { -- Autocompletion
 		-- the rust implementation via `'prefer_rust_with_warning'`
 		--
 		-- See :h blink-cmp-config-fuzzy for more information
-		fuzzy = { implementation = "lua" },
+		fuzzy = {
+			implementation = "lua",
+			sorts = {
+				function(a, b)
+					if (a.client_name == nil or b.client_name == nil) or (a.client_name == b.client_name) then
+						return
+					end
+					return b.client_name == "emmet_ls"
+				end,
+				-- default sorts
+				"score",
+				"sort_text",
+			},
+		},
 
 		-- Shows a signature help window while you type arguments for a function
 		-- signature = { enabled = true },

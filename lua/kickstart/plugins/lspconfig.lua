@@ -43,14 +43,16 @@ return {
 
 				-- Add a mapping to organize imports and add missing ones.
 				map("<leader>li", function()
-					vim.lsp.buf.code_action({
-						-- The context is the crucial part, providing diagnostics is required.
-						context = {
-							only = { "source.organizeImports" },
-							diagnostics = vim.diagnostic.get(event.buf), -- Pass current diagnostics
-						},
-						apply = true, -- Automatically apply the first available action
-					})
+					-- Use the command provided by typescript-tools.nvim if available
+					if vim.bo.filetype == "typescript" or vim.bo.filetype == "javascript" or vim.bo.filetype == "typescriptreact" or vim.bo.filetype == "javascriptreact" then
+						vim.cmd("TSToolsOrganizeImports")
+					else
+						-- Fallback to the generic LSP code action for other languages
+						vim.lsp.buf.code_action({
+							context = { only = { "source.organizeImports" }, diagnostics = {} },
+							apply = true,
+						})
+					end
 				end, "[L]sp Auto [I]mport")
 				-- Find references for the word under your cursor.
 				map("glr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
