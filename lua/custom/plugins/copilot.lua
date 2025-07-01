@@ -8,7 +8,7 @@ return {
 				auto_trigger = true,
 				debounce = 75,
 				keymap = {
-					accept = "<C-c>",
+					accept = false,
 					accept_word = false, -- Disable accepting word suggestions
 					accept_line = false, -- Disable accepting line suggestions
 				},
@@ -43,7 +43,7 @@ return {
 			local user = vim.env.USER or "User"
 			user = user:sub(1, 1):upper() .. user:sub(2)
 			return {
-				model = "gemini-2.5-pro-preview-06-05",
+				model = "gemini-2.5-pro",
 				mappings = {
 					submit_prompt = {
 						insert = "<C-CR>",
@@ -61,6 +61,7 @@ return {
 					layout = "float",
 					border = "rounded",
 					width = 0.7,
+					height = 0.7,
 				},
 			}
 		end,

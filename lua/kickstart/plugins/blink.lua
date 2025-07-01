@@ -45,17 +45,21 @@ return { -- Autocompletion
 			["<C-l>"] = { "accept", "fallback" },
 			["<Tab>"] = {
 				function(cmp)
+					-- jump to snippet if available
+					if cmp.snippet_active({ direction = 1 }) then
+						cmp.snippet_forward()
+						return true
+					end
+					-- otherwise, accept the completion item
 					if not cmp.is_visible() then
 						return
 					end
 
-					local keyword = require("blink.cmp.completion.list").context.get_keyword()
 					local accept_index = nil
 					local selected_item = cmp.get_selected_item()
 
 					for index, item in ipairs(cmp.get_items()) do
 						if item.client_name == "emmet_ls" or item.source_id == "snippets" then
-							print("accepted")
 							accept_index = index
 							break
 						end
@@ -72,8 +76,52 @@ return { -- Autocompletion
 				end,
 				"fallback",
 			},
+			["<S-Tab>"] = {
+				function(cmp)
+					if cmp.snippet_active({ direction = -1 }) then
+						cmp.snippet_backward()
+						return true
+					end
+
+					if cmp.is_visible() then
+						cmp.select_prev()
+						return true
+					end
+				end,
+				"fallback",
+			},
 			["<Down>"] = {},
 			["<Up>"] = {},
+			["<C-c>"] = {
+				function(cmp)
+					if require("copilot.suggestion").is_visible() then
+						require("copilot.suggestion").accept()
+						return true
+					end
+					if not cmp.is_visible() then
+						return
+					end
+
+					local accept_index = nil
+					local selected_item = cmp.get_selected_item()
+
+					for index, item in ipairs(cmp.get_items()) do
+						if item.client_name == "emmet_ls" or item.source_id == "snippets" then
+							accept_index = index
+							break
+						end
+					end
+
+					if selected_item then
+						cmp.accept()
+					elseif accept_index then
+						cmp.accept({ index = accept_index })
+					else
+						cmp.accept({ index = 1 })
+					end
+					return true
+				end,
+			},
 		},
 
 		appearance = {
