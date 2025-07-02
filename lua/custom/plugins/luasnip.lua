@@ -32,7 +32,7 @@ return {
 		require("luasnip").add_snippets("typescriptreact", {
 			s("fc", {
 				t({ "interface Props {", "\t" }),
-				t({"classsName?: string;", "\t" }),
+				t({"classsName?: string;"}),
 				i(1),
 				t({ "", "}", "", "export function " }),
 				f(get_component_name, {}),

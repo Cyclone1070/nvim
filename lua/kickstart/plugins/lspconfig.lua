@@ -43,17 +43,55 @@ return {
 
 				-- Add a mapping to organize imports and add missing ones.
 				map("<leader>li", function()
-					-- Use the command provided by typescript-tools.nvim if available
-					if vim.bo.filetype == "typescript" or vim.bo.filetype == "javascript" or vim.bo.filetype == "typescriptreact" or vim.bo.filetype == "javascriptreact" then
-						vim.cmd("TSToolsOrganizeImports")
-					else
-						-- Fallback to the generic LSP code action for other languages
-						vim.lsp.buf.code_action({
-							context = { only = { "source.organizeImports" }, diagnostics = {} },
-							apply = true,
-						})
+					local bufnr = event.buf
+					local diagnostics = vim.diagnostic.get(bufnr)
+					local applied_actions = {}
+
+					if not diagnostics or #diagnostics == 0 then
+						print("No diagnostics found.")
+						return
 					end
+
+					for _, d in ipairs(diagnostics) do
+						-- Many language servers mark missing imports with 'unresolved' or 'undefined'
+						local params = {
+							context = {
+								diagnostics = { d },
+							},
+							range = {
+								start = { d.lnum + 1, d.col + 1 },
+								["end"] = { d.end_lnum + 1, d.end_col + 1 },
+							},
+							filter = function(action)
+								if applied_actions[action.title] then
+									return false
+								end
+								-- Filter for actions that are likely to be "add import"
+								if action.title:match("[Aa]dd [iI]mport") then
+									applied_actions[action.title] = true
+									return true
+								end
+								return false
+							end,
+							apply = true,
+						}
+						vim.lsp.buf.code_action(params)
+						print("applying")
+					end
+
+					-- After attempting to add imports, organize them.
+					-- We defer this to give the server time to process the previous actions.
+					print("ran organize imports")
+					local organize_params = {
+						filter = function(action)
+							-- Filter for actions that are likely to be "organize imports"
+							return action.title:match("[Oo]rganize [Ii]mports")
+						end,
+						apply = true,
+					}
+					vim.lsp.buf.code_action(organize_params)
 				end, "[L]sp Auto [I]mport")
+
 				-- Find references for the word under your cursor.
 				map("glr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 
@@ -84,7 +122,7 @@ return {
 				map("glt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 				-- Hover display
 				map("r", vim.lsp.buf.hover, "Hove[R]")
-				-- Diagnostic display 
+				-- Diagnostic display
 				map("<leader>ld", vim.diagnostic.open_float, "Hove[R]")
 
 				-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)

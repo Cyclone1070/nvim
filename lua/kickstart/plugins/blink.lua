@@ -17,8 +17,9 @@ return { -- Autocompletion
 			["<C-j>"] = { "select_next", "fallback" },
 			["<C-k>"] = { "select_prev", "fallback" },
 			["<C-h>"] = { "cancel", "fallback" },
-			["<C-l>"] = { "select_and_accept", "fallback" },
+			["<C-l>"] = { "snippet_forward", "select_and_accept", "fallback" },
 			["<Tab>"] = {
+				"select_and_accept",
 				"snippet_forward",
 				"fallback",
 			},
@@ -71,16 +72,13 @@ return { -- Autocompletion
 			-- Optionally, set `auto_show = true` to show the documentation after a delay.
 			documentation = { auto_show = true, auto_show_delay_ms = 500 },
 			list = {
-				selection = { preselect = false, auto_insert = true },
+				selection = { preselect = true, auto_insert = true },
 			},
 			menu = {
 				border = "rounded",
 			},
 			ghost_text = {
-				enabled = true,
-				show_with_menu = true,
-				show_without_selection = true,
-				show_with_selection = false,
+				enabled = false,
 			},
 		},
 
