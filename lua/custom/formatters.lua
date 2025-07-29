@@ -4,4 +4,7 @@ return {
 	-- 			-- Conform can also run multiple formatters sequentially
 	python = { "isort", "black" },
 	javascript = { "prettierd" },
+	typescriptreact = { "prettierd" },
+	javascriptreact = { "prettierd" },
+	json = { "prettierd" },
 }

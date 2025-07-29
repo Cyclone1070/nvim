@@ -3,7 +3,7 @@ return { -- Autocompletion
 	event = "VimEnter",
 	version = "1.*",
 	dependencies = {
-		"L3MON4D3/LuaSnip",
+		"echasnovski/mini.snippets",
 		"folke/lazydev.nvim",
 	},
 	--- @module 'blink.cmp'
@@ -20,7 +20,6 @@ return { -- Autocompletion
 			["<C-l>"] = { "snippet_forward", "select_and_accept", "fallback" },
 			["<Tab>"] = {
 				"select_and_accept",
-				"snippet_forward",
 				"fallback",
 			},
 			["<S-Tab>"] = {
@@ -72,7 +71,7 @@ return { -- Autocompletion
 			-- Optionally, set `auto_show = true` to show the documentation after a delay.
 			documentation = { auto_show = true, auto_show_delay_ms = 500 },
 			list = {
-				selection = { preselect = true, auto_insert = true },
+				selection = { preselect = false, auto_insert = true },
 			},
 			menu = {
 				border = "rounded",
@@ -89,7 +88,7 @@ return { -- Autocompletion
 			},
 		},
 
-		snippets = { preset = "luasnip" },
+		snippets = { preset = "default" },
 
 		-- Blink.cmp includes an optional, recommended rust fuzzy matcher,
 		-- which automatically downloads a prebuilt binary when enabled.
@@ -102,10 +101,14 @@ return { -- Autocompletion
 			implementation = "lua",
 			sorts = {
 				function(a, b)
-					if (a.client_name == nil or b.client_name == nil) or (a.client_name == b.client_name) then
-						return
+					local a_is_emmet = a.client_name == "emmet_ls"
+					local b_is_emmet = b.client_name == "emmet_ls"
+					if a_is_emmet and not b_is_emmet then
+						return false
 					end
-					return b.client_name == "emmet_ls"
+					if not a_is_emmet and b_is_emmet then
+						return true
+					end
 				end,
 				-- default sorts
 				"score",

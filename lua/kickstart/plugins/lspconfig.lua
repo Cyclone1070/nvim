@@ -67,7 +67,7 @@ return {
 									return false
 								end
 								-- Filter for actions that are likely to be "add import"
-								if action.title:match("[Aa]dd [iI]mport") then
+								if action.title:match("[Aa]dd [Ii]mport") or action.title:match("[Uu]pdate [Ii]mport") then
 									applied_actions[action.title] = true
 									return true
 								end
@@ -76,12 +76,10 @@ return {
 							apply = true,
 						}
 						vim.lsp.buf.code_action(params)
-						print("applying")
 					end
 
 					-- After attempting to add imports, organize them.
 					-- We defer this to give the server time to process the previous actions.
-					print("ran organize imports")
 					local organize_params = {
 						filter = function(action)
 							-- Filter for actions that are likely to be "organize imports"
@@ -97,7 +95,7 @@ return {
 
 				-- Jump to the implementation of the word under your cursor.
 				--  Useful when your language has ways of declaring types without an actual implementation.
-				map("gli", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+				map("gld", require("telescope.builtin").lsp_implementations, "[G]oto [D]eclaration")
 
 				-- -- Jump to the definition of the word under your cursor.
 				-- --  This is where a variable was first declared, or where a function is defined, etc.

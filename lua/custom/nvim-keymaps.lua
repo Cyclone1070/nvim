@@ -79,11 +79,11 @@ map("n", "<leader>n", function()
 	require("noice").cmd("dismiss")
 end, { desc = "Dismiss All Notifications" })
 -- remap go to end of line
-map({ "n", "o" }, "E", "$", opts)
-map("v", "E", "$", opts)
+map({ "n", "o" }, "E", "g$", opts)
+map("v", "E", "g$", opts)
 -- remap go to start of line
-map({ "n", "o" }, "B", "^", opts)
-map("v", "B", "^", opts)
+map({ "n", "o" }, "B", "g^", opts)
+map("v", "B", "g^", opts)
 -- move current window around
 vim.keymap.set("n", "<C-w>h", "<C-w>H", { desc = "Move window left" })
 vim.keymap.set("n", "<C-w>j", "<C-w>J", { desc = "Move window down" })
@@ -95,14 +95,19 @@ map("n", "j", "gj", opts)
 map("n", "k", "gk", opts)
 map("v", "j", "gj", opts)
 map("v", "k", "gk", opts)
+-- Remap to moving based on real lines
+map("n", "gj", "j", opts)
+map("n", "gk", "k", opts)
+map("v", "gj", "j", opts)
+map("v", "gk", "k", opts)
 -- Quick move cursors
 map("n", "J", "5gj", opts)
 map("n", "K", "5gk", opts)
 map("v", "J", "5gj", opts)
 map("v", "K", "5gk", opts)
--- leader-J and leader-K to merge lines
-map("n", "<leader-j>", "J", opts)
-map("n", "<leader-k>", "K", opts)
+-- C-J and C-K to merge lines
+map("n", "<leader>j", "J", opts)
+map("n", "<leader>k", "K", opts)
 -- Keep Visual mode active after indent/unindent
 map("v", "<", "<gv", opts)
 map("v", ">", ">gv", opts)
@@ -113,3 +118,5 @@ map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
 map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
 map("v", "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = "Move Down" })
 map("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = "Move Up" })
+-- fold until matching pairs
+map("n", "Z", "zf%", { desc = "Fold until matching pairs" })

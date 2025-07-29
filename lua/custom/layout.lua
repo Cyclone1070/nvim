@@ -11,7 +11,7 @@ vim.opt.relativenumber = true
 --Neovide
 if vim.g.neovide then -- Check if Neovim is running inside Neovide
 	-- set font to comicshanns
-	vim.opt.guifont = "ComicShannsMono Nerd Font Mono:h15"
+	vim.opt.guifont = "JetBrainsMonoNL Nerd Font:h14"
 	vim.g.neovide_hide_mouse_when_typing = true
 	vim.g.neovide_cursor_vfx_mode = { "pixiedust" }
 	vim.g.neovide_floating_shadow = false

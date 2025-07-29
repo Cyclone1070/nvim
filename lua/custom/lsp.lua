@@ -16,6 +16,8 @@ return {
 	html = {},
 	cssls = {},
 	emmet_ls = {},
+	-- eslint_d = {},
+	eslint = {},
 	-- go
 	gopls = {
 		settings = {
