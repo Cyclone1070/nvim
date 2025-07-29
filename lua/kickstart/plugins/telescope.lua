@@ -115,6 +115,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
 						["i"] = {
 							["C-h"] = fb_action.goto_parent_dir,
 							["C-H"] = fb_action.toggle_hidden,
+							["<bs>"] = false,
 						},
 					},
 				},
