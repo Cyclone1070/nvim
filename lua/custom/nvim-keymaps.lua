@@ -49,13 +49,6 @@ if vim.g.neovide then
 	vim.keymap.set("i", "<D-v>", '<ESC>"+pli') -- Paste insert mode
 	-- Macos option key for meta
 	vim.g.neovide_input_macos_option_key_is_meta = "only_left"
-	-- Map move lines
-	map("n", "<M-j>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })
-	map("n", "<M-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move Up" })
-	map("i", "<M-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
-	map("i", "<M-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
-	map("v", "<M-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = "Move Down" })
-	map("v", "<M-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = "Move Up" })
 end
 -- aditional keymaps here
 
@@ -111,12 +104,12 @@ map("n", "<leader>k", "K", opts)
 -- Keep Visual mode active after indent/unindent
 map("v", "<", "<gv", opts)
 map("v", ">", ">gv", opts)
--- Map line moves
-map("n", "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })
-map("n", "<A-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move Up" })
-map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
-map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
-map("v", "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = "Move Down" })
-map("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = "Move Up" })
+-- Map move lines
+map("n", "<M-j>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })
+map("n", "<M-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move Up" })
+map("i", "<M-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
+map("i", "<M-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
+map("v", "<M-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = "Move Down" })
+map("v", "<M-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = "Move Up" })
 -- fold until matching pairs
 map("n", "Z", "zf%", { desc = "Fold until matching pairs" })
