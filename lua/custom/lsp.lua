@@ -18,6 +18,8 @@ return {
 	emmet_ls = {},
 	-- eslint_d = {},
 	eslint = {},
+	-- c++
+	clangd = {},
 	-- go
 	gopls = {
 		settings = {

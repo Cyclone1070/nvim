@@ -7,4 +7,5 @@ return {
 	typescriptreact = { "prettierd" },
 	javascriptreact = { "prettierd" },
 	json = { "prettierd" },
+	cpp = { "clang-format" },
 }
